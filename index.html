@@ -12,20 +12,26 @@
         .btn-ai { background: linear-gradient(135deg, #E50914 0%, #B20710 100%); box-shadow: 0 0 30px rgba(229, 9, 20, 0.4); }
         .prompt-card { animation: fadeIn 0.4s ease-out forwards; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 1rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; }
     </style>
 </head>
-<body class="p-6 flex flex-col items-center min-h-screen justify-center pb-20">
+<body class="p-6 flex flex-col items-center min-h-screen pb-20 pt-10">
 
     <header class="text-center mb-10">
         <h1 class="text-4xl font-bold netflix-red italic tracking-tighter uppercase">AI FLICK PICKER</h1>
-        <p class="text-zinc-500 text-[10px] mt-2 tracking-[0.2em] uppercase italic font-light">English AI Search Prompts</p>
+        <p class="text-zinc-500 text-[10px] mt-2 tracking-[0.2em] uppercase italic font-light">Pro AI Prompt Engineering</p>
     </header>
 
     <div class="w-full max-w-sm space-y-6">
         <div>
-            <label class="block mb-3 text-xs font-bold text-zinc-400 uppercase text-center tracking-widest">Select Movie Vibe</label>
+            <label class="block mb-3 text-xs font-bold text-zinc-400 uppercase text-center tracking-widest">Select Your Vibe</label>
             <select id="genre" class="w-full bg-zinc-900 border border-zinc-800 p-5 rounded-3xl text-white text-lg appearance-none text-center focus:outline-none shadow-2xl">
-                <option value="all">Surprise Me (Anything Great)</option>
+                <option value="all">Surprise Me (Any Vibe)</option>
+                <option value="comedy">Laugh Out Loud (Comedy)</option>
+                <option value="standup">Stand-up Comedy Specials</option>
+                <option value="us_series">Top-rated US TV Series</option>
+                <option value="foreign">Foreign Language Gems</option>
+                <option value="limited">Limited Series (One-Season Binge)</option>
                 <option value="history">History & Period Pieces</option>
                 <option value="bio">Biographies & True Stories</option>
                 <option value="action">High Adrenaline Action</option>
@@ -33,8 +39,7 @@
                 <option value="drama">Emotional & Deep Drama</option>
                 <option value="horror">Dark & Gritty Horror</option>
                 <option value="crime">Mastermind Crime & Heists</option>
-                <option value="anime">Epic & Visual Anime</option>
-                <option value="thai">Top Tier Thai Cinema</option>
+                <option value="thai">Thai Cinema & Series</option>
             </select>
         </div>
 
@@ -44,25 +49,29 @@
     </div>
 
     <div id="results" class="mt-12 w-full max-w-sm hidden">
-        <h2 class="text-[10px] font-bold text-zinc-500 mb-6 text-center uppercase tracking-widest">Jamie's AI Recommendations:</h2>
+        <h2 class="text-[10px] font-bold text-zinc-500 mb-6 text-center uppercase tracking-widest italic">Choose a prompt to search on Netflix:</h2>
         <div id="promptList" class="space-y-4"></div>
     </div>
 
     <script>
         const prompts = {
-            history: ["Heartbreaking historical movies based on true events", "Authentic World War II movies with great visuals", "Tense political conflicts and power struggles", "Period dramas with stunning costumes and deep stories"],
-            bio: ["Inspiring biographies of geniuses and outsiders", "Remarkable true stories of people who changed the world", "Secret lives of legendary artists and musicians", "Hard-hitting documentaries about world-changing events"],
-            action: ["Fast-paced action movies with non-stop excitement", "Futuristic high-tech combat and chase scenes", "Smart spy thrillers with betrayal and plot twists", "Gritty street-level action with realistic stunts"],
-            scifi: ["Mind-bending sci-fi about the future of humanity", "Complex time travel movies that make you think", "Stunning space exploration movies with deep themes", "Dystopian futures and cyberpunk aesthetics"],
-            drama: ["Breathtaking family dramas that will make you cry", "Intimate character studies about broken relationships", "Deeply emotional movies about hope and resilience", "Atmospheric slow-burn dramas with incredible acting"],
-            horror: ["Terrifying supernatural horror that stays with you", "Dark psychological thrillers with shocking twists", "Suspenseful survival horror in isolated locations", "Creature features with intense atmosphere"],
-            crime: ["Clever heist movies with unpredictable masterplans", "Gripping true crime stories and serial killer investigations", "Gritty underworld stories about mafia and power", "Complex legal thrillers and courtroom dramas"],
-            anime: ["Visual masterpiece anime with epic action", "Cerebral sci-fi anime about the human soul", "Heartfelt and emotional animated stories", "Dark fantasy anime for mature audiences"],
-            thai: ["Award-winning Thai movies with global acclaim", "Tense Thai mystery series with huge twists", "Heartwarming Thai romance and feel-good stories", "Artistic Thai cinema with deep cultural meaning"],
-            all: ["Under-the-radar hidden gems with high ratings", "Must-watch Netflix Originals everyone is talking about", "Mind-blowing movies with the best plot twists", "Life-changing movies that stay in your head for days"]
+            comedy: ["Feel-good romantic comedies with happy endings", "Hilarious dark comedies with clever writing", "Classic slapstick comedies for family night", "Witty satirical movies about modern life"],
+            standup: ["Best stand-up comedy specials by world-famous comedians", "Raunchy and edgy stand-up comedy shows", "Inspiring and storytelling-heavy stand-up specials", "Trending new stand-up comedy from diverse voices"],
+            us_series: ["Critically acclaimed US drama series with multiple seasons", "Must-watch American sitcoms for binge-watching", "Gritty US crime drama series with high ratings", "Captivating US political or legal TV shows"],
+            foreign: ["Top-rated foreign language movies with English subtitles", "Masterpiece international cinema from Europe and Asia", "Thrilling Non-English suspense and mystery movies", "Emotional world cinema that won global awards"],
+            limited: ["Compelling limited series you can finish in one weekend", "Gripping mini-series based on true crimes", "Visually stunning limited series with deep stories", "Binge-worthy short series with high IMDb scores"],
+            history: ["Authentic historical dramas based on world events", "Breathtaking period pieces with stunning cinematography", "Tense war movies and historical conflicts", "Fascinating history series about royalty and power"],
+            bio: ["Inspiring biopics about legendary world leaders", "Intimate true stories of iconic musicians and artists", "Compelling biographies of geniuses and rebels", "Hard-hitting documentaries about remarkable lives"],
+            action: ["Intense action thrillers with non-stop excitement", "High-octane car chases and martial arts movies", "Smart spy action with global conspiracies", "Gritty street-level combat and survival movies"],
+            scifi: ["Mind-blowing sci-fi about AI and future tech", "Complex time travel and parallel universe movies", "Epic space exploration and alien encounter stories", "Cyberpunk and dystopian future masterpieces"],
+            drama: ["Powerful tear-jerking dramas about family and love", "Deep character studies and emotional journeys", "Thought-provoking movies about social issues", "Beautifully shot indie dramas with great acting"],
+            horror: ["Genuinely scary supernatural horror movies", "Dark psychological thrillers that mess with your mind", "Cult classic horror and modern slasher films", "Suspenseful creature features and monster movies"],
+            crime: ["Clever heist movies with elaborate plans", "Dark and gritty noir crime stories", "Intriguing legal thrillers and courtroom dramas", "True crime investigations and cold case stories"],
+            thai: ["Critically acclaimed Thai horror and thrillers", "Heartfelt Thai romantic series and movies", "Epic Thai historical dramas and action", "Cutting-edge Thai indie cinema and originals"],
+            all: ["Under-the-radar hidden gems on Netflix", "Movies with the most unexpected plot twists", "Critically acclaimed Netflix Originals", "Feel-good movies to watch when you're tired"]
         };
 
-        const modifiers = ["on Netflix", "trending now", "critically acclaimed", "top rated", "with great reviews", "must watch"];
+        const modifiers = ["trending in Thailand", "award winning", "top rated this year", "hidden gems", "popular now", "critically acclaimed"];
 
         document.getElementById('randomBtn').addEventListener('click', function() {
             const genre = document.getElementById('genre').value;
@@ -74,6 +83,7 @@
 
             setTimeout(() => {
                 let pool = prompts[genre];
+                // Shuffle pool to ensure variety every time
                 let selected = [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
 
                 selected.forEach((text, index) => {
